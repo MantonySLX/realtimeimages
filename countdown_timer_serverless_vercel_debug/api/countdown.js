@@ -4,13 +4,18 @@ const { parseISO, differenceInSeconds } = require('date-fns');
 
 module.exports = async (req, res) => {
   try {
+    console.log("Serverless function invoked");  // Debug log
+
     // Get end_date from query parameters
     const endDateStr = req.query.end_date || '';
+    console.log("Received end_date:", endDateStr);  // Debug log
+
     const endDate = parseISO(endDateStr);
     const now = new Date();
 
     // Calculate time left in seconds
     const timeLeft = differenceInSeconds(endDate, now);
+    console.log("Calculated time left:", timeLeft);  // Debug log
 
     // Calculate days, hours, minutes
     const days = Math.floor(timeLeft / 86400);
@@ -36,7 +41,10 @@ module.exports = async (req, res) => {
     // Send the image
     const buffer = canvas.toBuffer('image/png');
     res.send(buffer);
+
+    console.log("Image sent successfully");  // Debug log
   } catch (error) {
+    console.error("Error occurred:", error);  // Debug log
     res.status(500).send('Internal Server Error');
   }
 };
